@@ -21,6 +21,7 @@ var dataModel = (function dataModel(dataObj) {
     };
     return dataObj;
 })(dataModel || {});
+
 /**
  * Model module
  */
@@ -46,6 +47,7 @@ var dataModel = (function dataModel(dataObj) {
     };
     return dataObj;
 })(dataModel || {});
+
 /**
  * A 1-way View Module
  */
@@ -128,8 +130,10 @@ var dataModel = (function dataModel(dataObj) {
         // Sort by popularity
         // Display in results area via function
     };
+
     return dataObj;
 })(dataModel || {});
+
 /**
  * A 2-way View Module
  */
@@ -154,6 +158,7 @@ var dataModel = (function dataModel(dataObj) {
     };
     return dataObj;
 })(dataModel || {});
+
 /**
  * Controller module
  */
@@ -174,6 +179,7 @@ var dataModel = (function dataModel(dataObj) {
     };
     return dataObj;
 })(dataModel || {});
+
 /**
  * main()
  */
@@ -191,5 +197,6 @@ var main = function() {
     window.setTimeout(
         () => model.set(""), 10);
 };
+
 // On DOM load:
 document.addEventListener('DOMContentLoaded', main, false);
