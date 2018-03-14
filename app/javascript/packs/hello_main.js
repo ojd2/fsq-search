@@ -31,13 +31,13 @@ var dataModel = (function dataModel(dataObj) {
         this._data = data;
         this.onSet = new dataObj._Event(this);
     };
-    // define getters and setters
+    // Define getters & setters:
     dataObj.Model.prototype = {
-        // get just returns the value
+        // Get value:
         get() {
             return this._data;
         },
-        // sets the value and notifies any even listeners
+        // Sets the value & notifies any event listeners:
         set(data) {
             this._data = data;
             this.onSet.notify({
@@ -56,8 +56,7 @@ var dataModel = (function dataModel(dataObj) {
     dataObj.OneWayView = function dataObjOneWayView(model, selector) {
         this._model = model;
         this._selector = selector;
-        // since not a 2-way, don't need to set this.onChanged
-        // attach model listeners
+        // Attach model listeners:
         this._model.onSet.attach(
             () => this.show());
     };
@@ -106,6 +105,9 @@ var dataModel = (function dataModel(dataObj) {
         console.log(main_url);
         $.get(main_url, function(data) {
             if (data) {
+            	 // Push results into []
+        		// Sort by popularity
+        		// Display in results area via function:
                 console.log(data["response"]["venues"]);
                 var dataString = JSON.stringify(data["response"]["venues"]);
                 console.log(dataString);
@@ -118,17 +120,14 @@ var dataModel = (function dataModel(dataObj) {
                     var listItem = $('<li>' + listItemString + '</li>');
                     var listItemTitle = $('.title', listItem);
                     listItemTitle.html(item.name);
-                    var listItemAmount = $('.amount', listItem);
-                    listItemAmount.html(item.location.address);
+                    var listItemLocation = $('.location', listItem);
+                    listItemLocation.html(item.location.address);
                     $('#dataList').append(listItem);
                 }
             } else {
                 console.log("ZERO_RESULTS");
             }
         });
-        // Push results into []
-        // Sort by popularity
-        // Display in results area via function
     };
 
     return dataObj;
