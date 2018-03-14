@@ -1,0 +1,181 @@
+/* Imports */
+@import url("reset.css");
+@import url("global-forms.css");
+
+/* Body */
+body {
+   background: #F5F4EF url('../images/bg.png');
+   color: #000305;
+   font-size: 87.5%; /* Base font size: 14px */
+   font-family: 'Rozha One', sans-serif;
+   line-height: 1.429;
+   margin: 0;
+   padding: 0;
+   text-align: center;
+}
+
+/* Headings */
+h1 {font-size: 3.876em} 
+h2 {font-size: 1.571em} 
+h3 {font-size: 1.429em} 
+h4 {font-size: 1.286em} 
+h5 {font-size: 1.143em} 
+h6 {font-size: 1em}
+
+h1, h2, h3, h4, h5, h6 {
+  text-shadow: 1px 2px 1px #eeeeee;
+  font-weight: 400;
+  line-height: 1.1;
+  margin-bottom: .8em;
+}
+
+p {
+  font-size: 1.2em; 
+  font-family: 'Arial', sans-serif;
+}
+
+
+/* Anchors */
+a {outline: 0;}
+a img {border: 0px; text-decoration: none;}
+a:link, a:visited {
+  color: #C74350;
+  padding: 0 1px;
+  text-decoration: underline;
+}
+a:hover, a:active {
+  background-color: #C74350;
+  color: #fff;
+  text-decoration: none;
+  text-shadow: 1px 1px 1px #333;
+}
+
+/* Paragraphs */
+p {margin-bottom: 1.143em;}
+* p:last-child {margin-bottom: 0;}
+
+strong, b {font-weight: bold;}
+em, i {font-style: italic;}
+
+::-moz-selection {background: #F6CF74; color: #fff;}
+::selection {background: #F6CF74; color: #fff;}
+
+
+/* Lists */
+ul {
+  list-style: outside disc;
+  margin: 1em 0 1.5em 1.5em;
+}
+
+ol {
+  list-style: outside decimal;
+  margin: 1em 0 1.5em 1.5em;
+}
+
+dl {margin: 0 0 1.5em 0;}
+dt {font-weight: bold;}
+dd {margin-left: 1.5em;}
+
+
+/* Quotes */
+blockquote {
+	font-style: italic; 
+	background-color:#eeeeee;
+	border-style: groove; 
+	width:50%;
+	height:20%;
+	padding:.5em .4em .5em .4em;
+	text-align: center;
+	margin: 0 auto;
+}
+
+blockquote p { margin:0;font-family: "Times", sans-serif;  }
+
+
+/* Search Bar Input */
+input {
+	margin: 50px 0;
+	background: none;
+	border-bottom: 1px solid black;
+	border-top: none;
+	border-left: none;
+	border-right: none;
+	width: 50%;
+	height: 40px;
+	text-align: center;
+	font-size:1.429em;
+}
+
+input:focus {
+	outline: none;
+	border-bottom: 3px solid black;
+}
+
+::-webkit-input-placeholder {
+	color: black;
+	font-weight: bold;
+}
+
+:-moz-placeholder {
+	/* Firefox 18- */
+	color: black;
+	font-weight: bold;
+}
+
+::-moz-placeholder {
+	/* Firefox 19+ */
+	color: black;
+	font-weight: bold;
+}
+
+:-ms-input-placeholder {
+	color: black;
+	font-weight: bold;
+}
+
+button {
+	width: 50px;
+	height: 50px;
+	background: none;
+	border: none;
+	position: absolute;
+	top: 200px;
+	left: 275px;
+}
+
+button:focus {
+	outline: none;
+}
+
+.fa {
+	color: black;
+	font-size: 2em;
+}
+
+#searchBar {
+	font-weight:bold;
+	text-transform: uppercase;
+}
+#submitButton {
+	width:100px;
+	height:50px;
+	background:#cccccc;
+	color: black;
+	border:none;
+	border-radius: 10px;
+	font-weight: bold;
+}
+
+#test {
+	background:#eeeeee;
+	color: black;
+	width:50%;
+	padding:.5em .4em .5em .4em;
+	margin: 0 auto;
+}
+
+#postalCode {
+	display: inline-block;
+}
+
+
