@@ -111,11 +111,30 @@ var dataModel = (function dataModel(dataObj) {
         $.get(main_url, function(data) {
             if (data) {
                 console.log(data["response"]["venues"]);
+                var dataString = JSON.stringify(data["response"]["venues"]);
+                console.log(dataString);
+                var dataObject = JSON.parse(dataString);
+				var listItemString = $('#listItem').html();
+
+				dataObject.forEach(buildNewList);
+
+				function buildNewList(item, index) {
+				  console.log(item);
+				  var listItem = $('<li>' + listItemString + '</li>');
+				  
+				  var listItemTitle = $('.title', listItem);
+				  listItemTitle.html(item.name);
+				  var listItemAmount = $('.amount', listItem);
+				  listItemAmount.html(item.location.address);
+				  
+				  $('#dataList').append(listItem);
+				}
             } else {
-                console.log("invalid post code");
+                console.log("ZERO_RESULTS");
             }
         });
         // Push results into []
+        // Sort by popularity
         // Display in results area via function
     };
     

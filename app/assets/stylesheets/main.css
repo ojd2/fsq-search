@@ -65,6 +65,7 @@ em, i {font-style: italic;}
 ul {
   list-style: outside disc;
   margin: 1em 0 1.5em 1.5em;
+  font-family: Helvetica;
 }
 
 ol {
@@ -176,6 +177,57 @@ button:focus {
 
 #postalCode {
 	display: inline-block;
+	font-size: 3em;
+	text-transform: uppercase;
 }
 
+
+/* Results List */
+sup {
+  vertical-align: baseline;
+  position: relative;
+  top: -0.4em;
+  color: red;
+}
+
+ul#dataList {
+	width:50%;
+	margin:0 auto;
+	padding:0;
+}
+div.templates {
+  display: none;
+  width:50%;
+  margin: 0 auto;
+}
+
+div.title {
+  float: left;
+  overflow: auto;
+}
+
+div.amount {
+  float: right;
+  overflow: auto;
+  color: #37b;
+}
+
+div.description {
+  overflow: auto;
+  font-size: .75em;
+  color: #666;
+  line-height: normal;
+}
+
+.row1,
+.row2 {
+  clear: both;
+}
+li {
+  padding: 10px 20px;
+  list-style: none;
+  background: #eeeeee;
+  margin: 10px 0;
+  border-radius: 20px;
+}
 
