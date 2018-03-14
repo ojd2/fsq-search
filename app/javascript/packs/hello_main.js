@@ -19,11 +19,8 @@ var dataModel = (function dataModel(dataObj) {
                 (v, i) => this._listeners[i](this._sender, args))
         },
     };
-
     return dataObj;
-
 })(dataModel || {});
-
 /**
  * Model module
  */
@@ -47,11 +44,8 @@ var dataModel = (function dataModel(dataObj) {
             });
         },
     };
-
     return dataObj;
-
 })(dataModel || {});
-
 /**
  * A 1-way View Module
  */
@@ -106,7 +100,7 @@ var dataModel = (function dataModel(dataObj) {
         var client_id = "ST14CB5SZWRASXVYBZ03HELQG5NZZHJ0VYQGMSVEX4YRQOII";
         var client_secret = "UEXNXQX51VAB3FLMKKNHGTQ41AQNB52VDAR4H5BDW4VW4P3F";
         var core_url = "https://api.foursquare.com/v2/venues/search?categoryId=4bf58dd8d48988d1e0931735&radius=5000&intent=checkin&ll=";
-        var main_url = core_url+latlong+'&client_id='+client_id+'&client_secret='+client_secret+'&v=20181402&limit=50';
+        var main_url = core_url + latlong + '&client_id=' + client_id + '&client_secret=' + client_secret + '&v=20181402&limit=50';
         console.log(main_url);
         $.get(main_url, function(data) {
             if (data) {
@@ -114,21 +108,18 @@ var dataModel = (function dataModel(dataObj) {
                 var dataString = JSON.stringify(data["response"]["venues"]);
                 console.log(dataString);
                 var dataObject = JSON.parse(dataString);
-				var listItemString = $('#listItem').html();
+                var listItemString = $('#listItem').html();
+                dataObject.forEach(buildNewList);
 
-				dataObject.forEach(buildNewList);
-
-				function buildNewList(item, index) {
-				  console.log(item);
-				  var listItem = $('<li>' + listItemString + '</li>');
-				  
-				  var listItemTitle = $('.title', listItem);
-				  listItemTitle.html(item.name);
-				  var listItemAmount = $('.amount', listItem);
-				  listItemAmount.html(item.location.address);
-				  
-				  $('#dataList').append(listItem);
-				}
+                function buildNewList(item, index) {
+                    console.log(item);
+                    var listItem = $('<li>' + listItemString + '</li>');
+                    var listItemTitle = $('.title', listItem);
+                    listItemTitle.html(item.name);
+                    var listItemAmount = $('.amount', listItem);
+                    listItemAmount.html(item.location.address);
+                    $('#dataList').append(listItem);
+                }
             } else {
                 console.log("ZERO_RESULTS");
             }
@@ -137,13 +128,8 @@ var dataModel = (function dataModel(dataObj) {
         // Sort by popularity
         // Display in results area via function
     };
-    
     return dataObj;
-
 })(dataModel || {});
-
-
-
 /**
  * A 2-way View Module
  */
@@ -166,11 +152,8 @@ var dataModel = (function dataModel(dataObj) {
             this._selector.value = this._model.get();
         },
     };
-
     return dataObj;
-
 })(dataModel || {});
-
 /**
  * Controller module
  */
@@ -189,12 +172,8 @@ var dataModel = (function dataModel(dataObj) {
             this._model.set(data);
         },
     };
-
     return dataObj;
-
 })(dataModel || {});
-
-
 /**
  * main()
  */
@@ -202,17 +181,15 @@ var main = function() {
     // Before everything:
     // Set model:
     var model = new dataModel.Model(),
-    // Two way view on search bar:
-    searchView = new dataModel.TwoWayView(model, document.getElementById('searchBar')),
-    searchController = new dataModel.Controller(model, searchView),
-    // One way view on output:
-    resultsView = new dataModel.OneWayView(model, document.getElementById('postalCode')),
-    resultsController = new dataModel.Controller(model, resultsView);
-
+        // Two way view on search bar:
+        searchView = new dataModel.TwoWayView(model, document.getElementById('searchBar')),
+        searchController = new dataModel.Controller(model, searchView),
+        // One way view on output:
+        resultsView = new dataModel.OneWayView(model, document.getElementById('postalCode')),
+        resultsController = new dataModel.Controller(model, resultsView);
     // Set timer to refresh model:
     window.setTimeout(
         () => model.set(""), 10);
 };
-
 // On DOM load:
 document.addEventListener('DOMContentLoaded', main, false);
