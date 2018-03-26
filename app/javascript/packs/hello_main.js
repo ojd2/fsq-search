@@ -49,18 +49,18 @@ var dataModel = (function dataModel(dataObj) {
 })(dataModel || {});
 
 /**
- * A 1-way View Module
+ * Results View:
  */
 var dataModel = (function dataModel(dataObj) {
     'use strict';
-    dataObj.OneWayView = function dataObjOneWayView(model, selector) {
+    dataObj.resultsView = function dataObjresultsView(model, selector) {
         this._model = model;
         this._selector = selector;
         // Attach model listeners:
         this._model.onSet.attach(
             () => this.show());
     };
-    dataObj.OneWayView.prototype = {
+    dataObj.resultsView.prototype = {
         show() {
             // Update model:	
             this._selector.innerHTML = this._model.get();
@@ -134,23 +134,23 @@ var dataModel = (function dataModel(dataObj) {
 })(dataModel || {});
 
 /**
- * A 2-way View Module
+ * Search Extract:
  */
 var dataModel = (function dataModel(dataObj) {
     'use strict';
-    // selector is a DOM element that supports .onChanged and .value
-    dataObj.TwoWayView = function dataObjTwoWayView(model, selector) {
+    // Input is a DOM element that supports .onChanged and .value
+    dataObj.searchExtract = function dataObjsearchExtract(model, selector) {
         this._model = model;
         this._selector = selector;
-        // for 2-way binding
+        // For 2-way binding
         this.onChanged = new dataObj._Event(this);
-        // attach model listeners
+        // Attach model listeners
         this._model.onSet.attach(
             () => this.show());
-        // attach change listener for two-way binding
+        // Attach change listener for two-way binding
         this._selector.addEventListener("change", e => this.onChanged.notify(e.target.value));
     };
-    dataObj.TwoWayView.prototype = {
+    dataObj.searchExtract.prototype = {
         show() {
             this._selector.value = this._model.get();
         },
@@ -180,17 +180,17 @@ var dataModel = (function dataModel(dataObj) {
 })(dataModel || {});
 
 /**
- * main()
+ * Main JS:
  */
 var main = function() {
     // Before everything:
     // Set model:
     var model = new dataModel.Model(),
         // Two way view on search bar:
-        searchView = new dataModel.TwoWayView(model, document.getElementById('searchBar')),
+        searchView = new dataModel.searchExtract(model, document.getElementById('searchBar')),
         searchController = new dataModel.Controller(model, searchView),
         // One way view on output:
-        resultsView = new dataModel.OneWayView(model, document.getElementById('postalCode')),
+        resultsView = new dataModel.resultsView(model, document.getElementById('postalCode')),
         resultsController = new dataModel.Controller(model, resultsView);
     // Set timer to refresh model:
     window.setTimeout(
