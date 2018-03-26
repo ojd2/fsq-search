@@ -8,6 +8,6 @@ Use the following:
 
 Then:
 
-```$ ruby server```
+```$ rails server```
 
 
