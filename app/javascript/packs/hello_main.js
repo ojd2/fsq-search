@@ -77,7 +77,8 @@ var dataModel = (function dataModel(dataObj) {
         var latlong = "";
         // Except term:
         if (term != "") {
-            var theUrl = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + term + ',GB';
+        	var _term = term.trim();
+            var theUrl = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + _term + ',GB';
             console.log(theUrl);
             $.get(theUrl, function(data) {
                 // Except results:
@@ -91,7 +92,10 @@ var dataModel = (function dataModel(dataObj) {
                         getForSqrCoffee(latlong);
                     }
                 } else {
-                    console.log("ZERO_RESULTS");
+                   $('#results').empty();
+                   $('#dataList').empty();
+               	   var error = $('<h2>Sorry, no matches found!</h2>');
+                   $('#dataList').append(error);
                 }
             });
         }
@@ -112,6 +116,10 @@ var dataModel = (function dataModel(dataObj) {
                 var dataString = JSON.stringify(data["response"]["venues"]);
                 console.log(dataString);
                 var dataObject = JSON.parse(dataString);
+                $('#results').empty();
+                $('#dataList').empty();
+                var title = '<p>Coffee Shops found nearby Postal Code:</p>';
+            	$('#results').append(title);
                 var listItemString = $('#listItem').html();
                 dataObject.forEach(buildNewList);
 
@@ -125,11 +133,12 @@ var dataModel = (function dataModel(dataObj) {
                     $('#dataList').append(listItem);
                 }
             } else {
-                console.log("ZERO_RESULTS");
+                $('#dataList').empty();
+                var error = $('<h2>Sorry, no matches found!</h2>');
+                $('#dataList').append(error);
             }
         });
     };
-
     return dataObj;
 })(dataModel || {});
 
@@ -168,7 +177,13 @@ var dataModel = (function dataModel(dataObj) {
         this._view = view;
         if (this._view.hasOwnProperty('onChanged')) {
             this._view.onChanged.attach(
-                (sender, data) => this.update(data));
+                (sender, data) => this.update(data)
+            );
+        }
+        else {
+        	$('#results').empty();
+        	$('#dataList').empty();
+            console.log("Empty input!");
         }
     };
     dataObj.Controller.prototype = {
@@ -186,12 +201,12 @@ var main = function() {
     // Before everything:
     // Set model:
     var model = new dataModel.Model(),
-        // Two way view on search bar:
-        searchView = new dataModel.searchExtract(model, document.getElementById('searchBar')),
-        searchController = new dataModel.Controller(model, searchView),
-        // One way view on output:
-        resultsView = new dataModel.resultsView(model, document.getElementById('postalCode')),
-        resultsController = new dataModel.Controller(model, resultsView);
+    // Two way view on search bar:
+    searchView = new dataModel.searchExtract(model, document.getElementById('searchBar')),
+    searchController = new dataModel.Controller(model, searchView),
+    // One way view on output:
+    resultsView = new dataModel.resultsView(model, document.getElementById('postalCode')),
+    resultsController = new dataModel.Controller(model, resultsView);
     // Set timer to refresh model:
     window.setTimeout(
         () => model.set(""), 10);
