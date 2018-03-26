@@ -1,19 +1,21 @@
 /**
- * Model Wrapper: Coffee Finder via Foursquare API
+ * Model Wrapper
+ *
+ * Function to capture the given events of the Model.
+ * Stores given events and their listeners.
  */
 var dataModel = (function dataModel(dataObj) {
     'use strict';
-    // Sender is the context of the Model or View which originates the event
     dataObj._Event = function dataObjEvent(sender) {
         this._sender = sender;
         this._listeners = [];
     };
     dataObj._Event.prototype = {
-        // add listener closures to the list
+        // Add listener closures to the list:
         attach(listener) {
             this._listeners.push(listener);
         },
-        // loop through, calling attached listeners
+        // Loop through, calling attached listeners:
         notify(args) {
             this._listeners.forEach(
                 (v, i) => this._listeners[i](this._sender, args))
@@ -23,7 +25,10 @@ var dataModel = (function dataModel(dataObj) {
 })(dataModel || {});
 
 /**
- * Model module
+ * Model 
+ * 
+ * Set the defined Model, extending its data
+ * & notify any additional event listeners.
  */
 var dataModel = (function dataModel(dataObj) {
     'use strict';
@@ -49,7 +54,14 @@ var dataModel = (function dataModel(dataObj) {
 })(dataModel || {});
 
 /**
- * Results View:
+ * Results View
+ *
+ * After listening to both the Model & Model Wrapper,
+ * fetch the given Post code, concatenate into helper
+ * function @getLatLong & @getForSqrCoffee which returns 
+ * the Foursquare API endpoint url for fetching coffee shops.
+ * Subsequently, this builds a list of found items & appends
+ * these list items to the main results area.
  */
 var dataModel = (function dataModel(dataObj) {
     'use strict';
@@ -69,7 +81,7 @@ var dataModel = (function dataModel(dataObj) {
             getLatLong(term);
         },
     };
-
+    // Helper function:
     function getLatLong(term) {
         // Retrieve coordinates using Geocoding API.
         var latitude = "";
@@ -77,9 +89,11 @@ var dataModel = (function dataModel(dataObj) {
         var latlong = "";
         // Except term:
         if (term != "") {
+        	// Trim term:
         	var _term = term.trim();
+        	// Define Google Geocode API url:
             var theUrl = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + _term + ',GB';
-            console.log(theUrl);
+            // Perform GET using url:
             $.get(theUrl, function(data) {
                 // Except results:
                 if (data["results"].length > 0 && data["status"] == "OK") {
@@ -88,11 +102,10 @@ var dataModel = (function dataModel(dataObj) {
                     latlong = latitude + ',' + longitude;
                     // Except latlong:
                     if (latlong.length > 0) {
-                        console.log(latlong);
+                        // Call view helper function:
                         getForSqrCoffee(latlong);
                     }
                 } else {
-                   $('#results').empty();
                    $('#dataList').empty();
                	   var error = $('<h2>Sorry, no matches found!</h2>');
                    $('#dataList').append(error);
@@ -101,28 +114,29 @@ var dataModel = (function dataModel(dataObj) {
         }
     };
 
+    // Helper function:
     function getForSqrCoffee(latlong) {
+    	// Set Foursquare Properties:
         var client_id = "ST14CB5SZWRASXVYBZ03HELQG5NZZHJ0VYQGMSVEX4YRQOII";
         var client_secret = "UEXNXQX51VAB3FLMKKNHGTQ41AQNB52VDAR4H5BDW4VW4P3F";
         var core_url = "https://api.foursquare.com/v2/venues/search?categoryId=4bf58dd8d48988d1e0931735&radius=5000&intent=checkin&ll=";
         var main_url = core_url + latlong + '&client_id=' + client_id + '&client_secret=' + client_secret + '&v=20181402&limit=50';
-        console.log(main_url);
+        
+        // Call GET using properties url:
         $.get(main_url, function(data) {
             if (data) {
-            	 // Push results into []
+            	// Push results into []
         		// Sort by popularity
         		// Display in results area via function:
-                console.log(data["response"]["venues"]);
                 var dataString = JSON.stringify(data["response"]["venues"]);
-                console.log(dataString);
                 var dataObject = JSON.parse(dataString);
-                $('#results').empty();
+                // Set HTML view area empty:
                 $('#dataList').empty();
-                var title = '<p>Coffee Shops found nearby Postal Code:</p>';
-            	$('#results').append(title);
+                // Define list items:
                 var listItemString = $('#listItem').html();
                 dataObject.forEach(buildNewList);
 
+                // Helper function to add items:
                 function buildNewList(item, index) {
                     console.log(item);
                     var listItem = $('<li>' + listItemString + '</li>');
@@ -143,22 +157,26 @@ var dataModel = (function dataModel(dataObj) {
 })(dataModel || {});
 
 /**
- * Search Extract:
+ * Search Extract Helper
+ *
+ * Another function which leverages the model
+ * & subsequently listens for any events upon a
+ * given DOM element that supports onChanged() 
+ * & value().
  */
 var dataModel = (function dataModel(dataObj) {
     'use strict';
-    // Input is a DOM element that supports .onChanged and .value
     dataObj.searchExtract = function dataObjsearchExtract(model, selector) {
         this._model = model;
         this._selector = selector;
-        // For 2-way binding
+        // For 2-way binding:
         this.onChanged = new dataObj._Event(this);
-        // Attach model listeners
-        this._model.onSet.attach(
-            () => this.show());
-        // Attach change listener for two-way binding
+        // Attach model listeners:
+        this._model.onSet.attach(() => this.show());
+        // Attach listener for two-way binding:
         this._selector.addEventListener("change", e => this.onChanged.notify(e.target.value));
     };
+    // Extend Model to searchExtract():
     dataObj.searchExtract.prototype = {
         show() {
             this._selector.value = this._model.get();
@@ -168,7 +186,11 @@ var dataModel = (function dataModel(dataObj) {
 })(dataModel || {});
 
 /**
- * Controller module
+ * Controller 
+ *
+ * Used to listen to any onChanged() events
+ * throughout the model, setting data as it
+ * listens.
  */
 var dataModel = (function dataModel(dataObj) {
     'use strict';
@@ -180,11 +202,11 @@ var dataModel = (function dataModel(dataObj) {
                 (sender, data) => this.update(data)
             );
         }
-        else {
-        	$('#results').empty();
-        	$('#dataList').empty();
-            console.log("Empty input!");
-        }
+        // else {
+        // 	$('#results').empty();
+        // 	$('#dataList').empty();
+        //     console.log("Empty input!");
+        // }
     };
     dataObj.Controller.prototype = {
         update(data) {
@@ -195,21 +217,23 @@ var dataModel = (function dataModel(dataObj) {
 })(dataModel || {});
 
 /**
- * Main JS:
+ * Main
+ *
+ * Driver code for the main functionalities of
+ * the program. First define the model, then
+ * attach a View & Controller instance to the
+ * two DOM HTML elements.
  */
 var main = function() {
     // Before everything:
     // Set model:
     var model = new dataModel.Model(),
-    // Two way view on search bar:
+    // View on search bar using helper:
     searchView = new dataModel.searchExtract(model, document.getElementById('searchBar')),
     searchController = new dataModel.Controller(model, searchView),
-    // One way view on output:
+    // One way view on output of found shops:
     resultsView = new dataModel.resultsView(model, document.getElementById('postalCode')),
     resultsController = new dataModel.Controller(model, resultsView);
-    // Set timer to refresh model:
-    window.setTimeout(
-        () => model.set(""), 10);
 };
 
 // On DOM load:
