@@ -7,5 +7,7 @@ Use the following:
 ```$ bundle install```
 
 Then:
+
 ```$ ruby server```
+
 
