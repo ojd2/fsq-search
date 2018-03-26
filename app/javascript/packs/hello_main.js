@@ -234,6 +234,9 @@ var main = function() {
     // One way view on output of found shops:
     resultsView = new dataModel.resultsView(model, document.getElementById('postalCode')),
     resultsController = new dataModel.Controller(model, resultsView);
+    // Set timer to refresh model:
+    window.setTimeout(
+        () => model.set(""), 10);
 };
 
 // On DOM load:
